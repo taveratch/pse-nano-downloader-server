@@ -1,13 +1,18 @@
 import Sequelize from 'sequelize';
+
 import {USERNAME, PASSWORD, DB_NAME, HOST, PORT} from 'src/constants/db-config';
+
+let sequelize = null;
 export default {
   start: () => {
-    const sequelize = new Sequelize(`mysql://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DB_NAME}`);
+    if(sequelize) return new Promise((resolve, reject) => { resolve(sequelize); });
+    const seq = new Sequelize(`mysql://${USERNAME}:${PASSWORD}@${HOST}:${PORT}/${DB_NAME}`);
     return new Promise((resolve, reject) => {
-      sequelize.authenticate()
+      seq.authenticate()
       .then(() => {
         console.log('Connection has been established');
-        resolve(sequelize);
+        sequelize = seq;
+        resolve(seq);
       })
       .catch((err) => {
         console.error('Unable to establish the connection', err);
