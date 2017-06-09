@@ -7,34 +7,31 @@ export default {
     return new Promise((resolve, reject) => {
       Users(sequelize).sync()
       .then(() => {
-        Users(sequelize).findOne({ where: {username: username} })
+        Users(sequelize).findOne({ where: {username: username, password: password} })
         .then(user => {
-          console.log(user);
+          resolve(user);
         });
       })
       .catch(err => {
-        console.error('Error');
-        resolve(err);
+        reject(err);
       });
     });
   },
 
-  signup: async (username, password, site_id, admin) => {
+  signup: async (args) => { // username, password, site_id, admin
     let sequelize = await Database.start();
     return new Promise((resolve, reject) => {
       Users(sequelize).sync()
       .then(() => {
-        Users(sequelize).create({
-          username, password, site_id, admin
+        Users(sequelize).create(args)
+        .then(user => {
+          resolve(user);
+        })
+        .catch(err => {
+          reject(err);
         });
-      })
-      .then(user => {
-        console.log('Create user successfully');
-        console.log(user);
-      })
-      .catch(err => {
-        console.error(err);
       });
+
     });
   },
 
