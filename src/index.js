@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import database from './utils/database';
+import morgan from 'morgan';
 import CreateSite from 'src/scripts/create-sites';
 import AuthController from 'src/controllers/auth-controller';
 import Migrate from 'src/scripts/migrate';
@@ -12,6 +13,7 @@ let app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(cors());
+app.use(morgan('dev'));
 
 (async () => {
   // inventoryDownloader.download();

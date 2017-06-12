@@ -1,11 +1,12 @@
+import jwt from 'jsonwebtoken';
 import express from 'express';
 import sha512 from 'sha512';
 import {graphql, GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLNonNull} from 'graphql';
+import secret from 'src/constants/secret';
 import AuthController from 'src/controllers/auth-controller';
 import User from 'src/schema/graphql/User';
 
 let auth = express();
-
 const Query = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
@@ -45,11 +46,30 @@ function getAccountSchema(username, password) {
   }`);
 }
 
+function createToken(user) {
+  return jwt.sign(user, secret['secret'], {
+    expiresIn: 1440*60 //24 hours
+  });
+}
+
 auth.post('/signin', async (req, res) => {
   let username = req.body.username;
   let password = sha512(req.body.password).toString('hex');
   let result = await getAccountSchema(username, password);
-  res.send(result.data);
+  let user = result.data.user;
+  if(user) {
+    let token = createToken(user);
+    res.send({
+      success: true,
+      token: token,
+      user: user
+    });
+  }else {
+    res.send({
+      success: false,
+      message: 'Incorrect username or password'
+    });
+  }
 });
 
 auth.post('/signup', async (req ,res) => {
@@ -57,9 +77,22 @@ auth.post('/signup', async (req ,res) => {
   let password = sha512(req.body.password).toString('hex');
   let site_id = parseInt(req.body.site_id);
   let admin = Boolean(req.body.admin);
-  let user = await AuthController.signup({username, password, site_id, admin});
-  let result = await getAccountSchema(user.username, user.password);
-  res.send(result.data);
+  try{
+    let user = await AuthController.signup({username, password, site_id, admin});
+    let result = await getAccountSchema(user.username, user.password);
+    let userResult = result.data.user;
+    let token = createToken(user);
+    res.send({
+      success: true,
+      token: token,
+      user: userResult
+    });
+  }catch (err) {
+    res.send({
+      success: false,
+      message: err
+    });
+  }
 });
 
 export default auth;
