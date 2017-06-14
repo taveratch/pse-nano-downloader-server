@@ -10,7 +10,6 @@ export default {
     return new Promise((resolve, reject) => {
       seq.authenticate()
       .then(() => {
-        console.log('Connection has been established');
         sequelize = seq;
         resolve(seq);
       })

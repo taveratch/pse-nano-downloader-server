@@ -2,7 +2,13 @@ import Site from 'src/schema/Site';
 import Database from 'src/utils/database';
 
 export default {
-  create: (sequelize, args) => {
+
+  /*
+    Create a site in database.
+    @arg: {name: String, url: String}
+  */
+  create: async args => {
+    let sequelize = await Database.start();
     return new Promise((resolve, reject) => {
       Site(sequelize).sync()
       .then(() => {
@@ -16,6 +22,10 @@ export default {
       });
     });
   },
+
+  /*
+    Get site by id
+  */
   get: async id => {
     let sequelize = await Database.start();
     return new Promise((resolve, reject) => {
@@ -30,11 +40,23 @@ export default {
       });
     });
   },
+
+  /*
+    Remove all sites in database.
+  */
   dropAll: (sequelize) => {
     return new Promise((resolve, reject) => {
       Site(sequelize).drop()
       .then(() => resolve(200))
       .catch(err => reject(err));
     });
+  },
+
+  /*
+    Get all sites
+  */
+  getAll: async () => {
+    let sequelize = await Database.start();
+    return Site(sequelize).findAll();
   }
 };

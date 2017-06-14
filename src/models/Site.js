@@ -1,6 +1,7 @@
 class Site {
-  constructor(url, inventories) {
+  constructor(url, name, inventories) {
     this.url = url;
+    this.name = name;
     this.inventories = inventories;
   }
 }

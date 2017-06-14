@@ -1,12 +1,32 @@
 {
   "sites" : [
-    "http://pttcompaq.dyndns.org",
-    "http://pttjvp.dyndns.org",
-    "http://sysinfo173.trueddns.in.th",
-    "http://sysinfo159.trueddns.in.th",
-    "http://pttsakunthong.dyndns.org",
-    "http://sysinfo156.trueddns.in.th",
-    "http://sysinfo158.trueddns.in.th",
-    "http://pttgracegreen.dyndns.org"
+    {
+      "name": "pttcompaq",
+      "url": "http://pttcompaq.dyndns.org"
+    },
+    {
+      "name": "sysinfo173",
+      "url": "http://sysinfo173.trueddns.in.th"
+    },
+    {
+      "name": "sysinfo159",
+      "url": "http://sysinfo159.trueddns.in.th"
+    },
+    {
+      "name": "pttsakunthong",
+      "url": "http://pttsakunthong.dyndns.org"
+    },
+    {
+      "name": "sysinfo156",
+      "url": "http://sysinfo156.trueddns.in.th"
+    },
+    {
+      "name": "sysinfo158",
+      "url": "http://sysinfo158.trueddns.in.th"
+    },
+    {
+      "name": "pttgracegreen",
+      "url": "http://pttgracegreen.dyndns.org"
+    }
   ]
 }

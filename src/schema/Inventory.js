@@ -1,6 +1,11 @@
 import Sequelize from 'sequelize';
 export default (sequelize) => {
   return sequelize.define('inventory', {
+    site_id: {
+      type: Sequelize.INTEGER,
+      references: 'sites',
+      referencesKey: 'id'
+    },
     fileName: {
       type: Sequelize.STRING,
       field: 'file_name'
