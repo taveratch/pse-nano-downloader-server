@@ -5,10 +5,5 @@ export default sequelize => {
     username: Sequelize.STRING,
     password: Sequelize.STRING,
     admin: Sequelize.BOOLEAN,
-    site_id: {
-      type: Sequelize.INTEGER,
-      references: 'sites',
-      referencesKey: 'id'
-    }
   });
 };

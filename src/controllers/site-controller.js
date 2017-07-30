@@ -44,7 +44,8 @@ export default {
   /*
     Remove all sites in database.
   */
-  dropAll: (sequelize) => {
+  dropAll: async () => {
+    let sequelize = await Database.start();
     return new Promise((resolve, reject) => {
       Site(sequelize).drop()
       .then(() => resolve(200))
@@ -58,5 +59,16 @@ export default {
   getAll: async () => {
     let sequelize = await Database.start();
     return Site(sequelize).findAll();
+  },
+
+  getByUserId: async (userId) => {
+    let sequelize = await Database.start();
+    return new Promise((resolve, reject) => {
+      // Site(sequelize).findAll({
+      //   where: {
+      //     id
+      //   }
+      // })
+    });
   }
 };
