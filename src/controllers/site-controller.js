@@ -24,13 +24,13 @@ export default {
   },
 
   /*
-    Get site by id
+    Get sites by ids
   */
-  get: async id => {
+  getByIds: async ids => {
     let sequelize = await Database.start();
     return new Promise((resolve, reject) => {
-      Site(sequelize).findOne({
-        where: {id: id}
+      Site(sequelize).findAll({
+        where: {id: ids}
       })
       .then(site => {
         resolve(site);

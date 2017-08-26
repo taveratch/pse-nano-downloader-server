@@ -1,15 +1,11 @@
 import express from 'express';
+import _ from 'lodash';
 import SiteController from 'src/controllers/site-controller.js';
 import AuthController from 'src/controllers/auth-controller.js';
 import SiteUserController from 'src/controllers/site-user-controller.js';
 import CreateSite from '../scripts/create-sites.js';
 
 let siteAPI = express();
-
-siteAPI.get('/', (req, res) => {
-  // let token = req.query.token;
-
-});
 
 siteAPI.get('/removeall', (req, res) => {
   console.log('--------Dropping sites--------');
@@ -52,21 +48,22 @@ siteAPI.post('/adduser', (req, res) => {
   });
 });
 
-siteAPI.get('/get', async (req, res) => {
+siteAPI.get('/', async (req, res) => {
   let token = req.get('authorization');
+  if(!token)
+    return res.status(401).send(AuthController.getTokenErrorMessage());
   try {
     let user = await AuthController.verifyToken(token);
     let userId = user.id;
     let siteUsers = await SiteUserController.getByUserId(userId);
+    let ids = _.map(siteUsers, 'id');
+    let sites = await SiteController.getByIds(ids);
     res.status(200).send({
       success: true,
-      sites: siteUsers
+      sites: sites
     });
   }catch(err) {
-    res.status(401).send({
-      success: false,
-      message: 'Invalid token'
-    });
+    res.status(401).send(AuthController.getTokenErrorMessage());
   }
 });
 

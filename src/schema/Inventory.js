@@ -3,8 +3,10 @@ export default (sequelize) => {
   return sequelize.define('inventory', {
     site_id: {
       type: Sequelize.INTEGER,
-      references: 'sites',
-      referencesKey: 'id'
+      references: {
+        model: 'sites',
+        key: 'id'
+      }
     },
     fileName: {
       type: Sequelize.STRING,

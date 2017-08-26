@@ -54,6 +54,7 @@ function getAccountSchema(username, password) {
 
 auth.post('/authenticate', async (req, res) => {
   let token = req.body.token;
+  console.log(token);
   /*If there is a token in a request, then start verify it*/
   if(token) {
     AuthController.verifyToken(token)

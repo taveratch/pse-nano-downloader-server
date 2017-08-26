@@ -86,6 +86,13 @@ class AuthController {
           });
       });
     }
+
+    getTokenErrorMessage() {
+        return {
+            success: false,
+            message: 'Invalid Token'
+        };
+    }
 }
 
 export default new AuthController();

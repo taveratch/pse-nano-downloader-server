@@ -44,6 +44,26 @@ class InventoryController {
     let sequelize = await Database.start();
     return Inventory(sequelize).drop();
   }
+
+  async getBySiteId(siteId) {
+    let sequelize = await Database.start();
+    return new Promise((resolve, reject) => {
+      Inventory(sequelize).sync()
+      .then(() => {
+        Inventory(sequelize).findAll({
+          where: {
+            site_id: siteId
+          }
+        })
+        .then(inventories => {
+          resolve(inventories);
+        })
+        .catch(err => {
+          reject(err);
+        });
+      });
+    });
+  }
 }
 
 export default new InventoryController();

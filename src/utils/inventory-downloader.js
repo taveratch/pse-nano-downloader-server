@@ -16,6 +16,7 @@ class Downloader {
   }
 
   getInventoryList(siteUrl) {
+    console.log('---- Get inventory list from ' + siteUrl + ' ----');
     let url = `${siteUrl}:${PORT}/inventory/filesrecord.txt`;
     let options = {
       url : url,
@@ -27,6 +28,7 @@ class Downloader {
     return new Promise((resolve, reject) => {
       request(options, (err, response, body) => {
         if(err) return reject(err);
+        console.log('---- (Success) Get inventory list from ' + siteUrl + ' ----');
         let files = this.formatResult(body);
         resolve(files);
       });
@@ -45,8 +47,10 @@ class Downloader {
     return new Promise((resolve, reject) => {
       let fileName = `files/${site.name}_${inventory.fileName}`;
       request(options, (err, response, body) => {
+        if(err) throw err;
         writeFile(fileName, body, async (err) => {
           if(err) reject(err);
+          console.log(`----Downloaded ${fileName}----`);
           let inventoryRes = await InventoryController.create({
             site_id: site.id,
             fileName: fileName,
